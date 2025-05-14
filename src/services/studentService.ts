@@ -41,13 +41,18 @@ const generateStudent = (index: number): Student => {
 
 // Generate mock data
 const generateMockStudents = (count: number = 50): Student[] => {
-  return Array.from({ length: count }, (_, index) => generateStudent(index));
+  const students = JSON.parse(localStorage.getItem('students') || '[]') as Student[];
+  if(students.length) {
+    return JSON.parse(localStorage.getItem('students')!);
+  }
+  const newStudents = Array.from({ length: count }, (_, index) => generateStudent(index));
+  localStorage.setItem('students', JSON.stringify(students));
+  return newStudents;
 };
 
 // Create mock data
 const mock = new MockAdapter(axios, { delayResponse: 1000 });
-const data: Student[] = generateMockStudents();
-mock.onGet('/students').reply(200, data);
+mock.onGet('/students').reply(200, generateMockStudents());
 
 // Fetch students mock API call
 export const fetchStudentsMock = async (): Promise<Student[]> => {

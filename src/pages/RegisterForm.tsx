@@ -4,6 +4,7 @@ import { registerWithEmail } from '../utils/emailAuth';
 import { signInWithGoogle } from '../utils/googleAuth';
 import { Mail, Lock, User, AlertCircle, CheckCircle, UserPlus } from 'lucide-react';
 import {  updateProfile } from 'firebase/auth';
+import { useAuth } from '../context/AuthContext';
 
 export default function RegisterForm() {
   const [name, setName] = useState('');
@@ -13,6 +14,7 @@ export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const {setCurrentUser} = useAuth()
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -50,7 +52,7 @@ export default function RegisterForm() {
       updateProfile(user,{displayName:name})
       // Redirect to home after successful registration
       setTimeout(() => {
-        navigate('/');
+        navigate('/login');
       }, 2000);
     } catch (e) {
       setError('Registration failed. Please try again.');
@@ -62,12 +64,12 @@ export default function RegisterForm() {
   const handleGoogleRegister = async () => {
     setError('');
     setIsLoading(true);
-    
     try {
-      await signInWithGoogle();
+      const user  = await signInWithGoogle();
+      setCurrentUser(user)
       navigate('/');
     } catch (e) {
-      setError('Google sign up failed. Please try again.');
+      setError('Google login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

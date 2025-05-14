@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StudentProfileModal from './StudentProfileModal';
 import {type Student }from '../App'
+import { useAuth } from '../context/AuthContext';
+import RequireLoginModel from './LoginModel';
 
 interface Props {
   student: Student;
@@ -35,7 +37,16 @@ const StudentCard: React.FC<Props> = ({
   onEdit,
   onDelete
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const[isLoginModelOpen,setIsLoginModelOpen] = useState<boolean>(false)
+  const {currentUser} = useAuth()
+  const open=()=>{
+    if(currentUser){
+      setIsModalOpen(true)
+    }else{
+      setIsLoginModelOpen(true)
+    }
+  }
 
   // Placeholder image with initials
   const PlaceholderAvatar = () => {
@@ -54,11 +65,12 @@ const StudentCard: React.FC<Props> = ({
 
   return (
     <>
+    <RequireLoginModel isOpen={isLoginModelOpen} setOpen={setIsLoginModelOpen}/>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2 }}
-        onClick={() => setIsModalOpen(true)}
+        onClick={open}
         className={`
           relative flex items-center p-4 bg-white dark:bg-gray-800 
           rounded-lg shadow-md cursor-pointer overflow-hidden group

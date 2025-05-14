@@ -7,11 +7,10 @@ export interface Student {
   age: number;
   profileImage?: string;
 }
-// App.tsx
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import LoginForm from './pages/LoginForm';
-import ProtectedRoute from './components/ProtectedRoute';
 import RegisterForm from './pages/RegisterForm';
 
 function App() {
@@ -23,9 +22,7 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute>
               <Dashboard />
-            </ProtectedRoute>
           }
         />
       </Routes>

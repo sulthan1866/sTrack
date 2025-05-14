@@ -10,12 +10,23 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType|undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, setCurrentUser);
+  const [currentUser, setCurrentUser] = useState<User | null>(JSON.parse(localStorage.getItem('user')!) || null);
+    useEffect(() => {
+    // ✅ Handles standard login state (email/password, already logged in, etc.)
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+      } else {
+        setCurrentUser(null);
+        localStorage.removeItem('user');
+      }
+    });
+
     return () => unsub();
   }, []);
+  
 
   return (
     <AuthContext.Provider value={{ currentUser,setCurrentUser }}>

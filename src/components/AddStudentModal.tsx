@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import {type Student} from '../App';
 import { AVAILABLE_COURSES } from '../services/studentService';
+import { useAuth } from '../context/AuthContext';
+import RequireLoginModal from './LoginModel';
 
 interface Props {
   setStudents: React.Dispatch<React.SetStateAction<Student[]>>;
@@ -12,6 +14,8 @@ interface Props {
 
 const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
   const [open, setOpen] = useState<boolean>(false);
+    const [isLoginOpen, setLoginOpen] = useState<boolean>(false);
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -19,6 +23,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
     age: '',
     profileImage: ''
   });
+  const {currentUser} = useAuth()
 
   // Validate inputs
   const validateForm = () => {
@@ -69,12 +74,15 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
   };
 
   const openModal = () => {
-    // Add your admin check logic here if needed
-    setOpen(true);
+  if (!currentUser) {
+    setLoginOpen(true);
+  }else{
+    setOpen(true);}
   };
 
   return (
     <>
+    <RequireLoginModal isOpen={isLoginOpen} setOpen={setLoginOpen}/>
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

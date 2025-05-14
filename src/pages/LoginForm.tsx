@@ -4,7 +4,7 @@ import { loginWithEmail } from '../utils/emailAuth';
 import { signInWithGoogle } from '../utils/googleAuth';
 import { Mail, Lock, LogIn, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import type { User, UserCredential } from 'firebase/auth';
+import { type User } from 'firebase/auth';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -20,8 +20,8 @@ export default function LoginForm() {
     setIsLoading(true);
     
     try {
-      const user:UserCredential = await loginWithEmail(email, password);
-      setCurrentUser(user.user)
+      const user:User = await loginWithEmail(email, password);
+      setCurrentUser(user)
       navigate('/');
     } catch (e) {
       setError('Login failed. Please check your credentials.');
@@ -33,9 +33,8 @@ export default function LoginForm() {
   const handleGoogleLogin = async () => {
     setError('');
     setIsLoading(true);
-    
     try {
-      const user:User = await signInWithGoogle();
+      const user  = await signInWithGoogle();
       setCurrentUser(user)
       navigate('/');
     } catch (e) {

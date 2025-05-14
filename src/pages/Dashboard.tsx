@@ -15,10 +15,16 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { currentUser } = useAuth();
+
+
+useEffect(() => {
+      fetchStudentsMock().then(setStudents);
+  }
+  , []);
   useEffect(() => {
-    fetchStudentsMock().then(setStudents);
-    
-  }, []);
+    localStorage.setItem('students', JSON.stringify(students));
+  }, [students]);
+
 
 
   return (
