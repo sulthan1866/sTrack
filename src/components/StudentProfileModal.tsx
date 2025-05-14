@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, User, Mail, Book, Calendar, Edit, Trash2, Lock } from 'lucide-react';
 
-import { AuthContext, type Student } from '../App';
+import { type Student } from '../App';
 import { AVAILABLE_COURSES } from '../services/studentService';
 import { toast } from 'react-toastify';
 
@@ -40,13 +40,9 @@ const StudentProfileModal: React.FC<Props> = ({
   onEdit, 
   onDelete 
 }) => {
-  const [isAuthendicating, setIsAuthenticating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [password, setPassword] = useState('');
   const [editedStudent, setEditedStudent] = useState<Student>({ ...student });
-  const [error, setError] = useState('');
-  const { checkAdmin ,isAdmin} = useContext(AuthContext);
   // Placeholder image with initials
   const PlaceholderAvatar = () => {
     const initials = getInitials(student.name);
@@ -93,23 +89,13 @@ const StudentProfileModal: React.FC<Props> = ({
     };
 
   const handleEdit = () => {
-    if (isAdmin || checkAdmin(password)) {
       setIsEditing(true)
-      setIsAuthenticating(false);
-      setError('');
-    } else {
-      setError('Invalid password. Please try again.');
-    }
   };
 
   const handleDelete = (studentId:string) => {
-    if (checkAdmin(password)) {
       onDelete(studentId);
-      setIsAuthenticating(false)
       onClose();
-    } else {
-      setError('Invalid password. Please try again.');
-    }
+    
   };
 
   const handleSaveEdit = () => {
@@ -119,7 +105,7 @@ const StudentProfileModal: React.FC<Props> = ({
   };
 
   // Render password confirmation for edit/delete
-  if ((isAuthendicating &&!isAdmin) ||isDeleting) {
+  if (isDeleting) {
     return (
       <motion.div 
         initial={{ opacity: 0 }}
@@ -136,42 +122,28 @@ const StudentProfileModal: React.FC<Props> = ({
           className="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6"
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="text-2xl font-bold text-center mb-4">
-            {!isDeleting ? 'Edit Profile' : 'Delete Student'}
+          <h2 className="text-2xl font-bold text-center mb-4 dark:text-gray-200">
+            {'Delete Student'}
           </h2>
-          
-          <div className="mb-4">
+<div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Enter Admin Password
+              {student.name}
             </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            />
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+           
           </div>
-
           <div className="flex space-x-4">
             <button
               onClick={!isDeleting ? handleEdit :()=> handleDelete(student.id)}
-              className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
-                !isDeleting 
-                  ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                  : 'bg-red-500 text-white hover:bg-red-600'
-              }`}
+              className={'flex-1 px-4 py-2 rounded-lg transition-colors bg-red-500 text-white hover:bg-red-600'}
             >
-              {!isDeleting ? 'Edit' : 'Delete'}
+              {'Delete'}
+              
             </button>
             <button
               onClick={() => {
-                setIsAuthenticating(false)
                 setIsDeleting(false);
-                setPassword('');
-                setError('');
               }}
-              className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+              className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
@@ -218,7 +190,7 @@ const StudentProfileModal: React.FC<Props> = ({
                     placeholder="Full Name"
                     value={editedStudent.name}
                     onChange={(e) => setEditedStudent({ ...editedStudent, name: e.target.value })}
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   />
                 </div>
               </div>
@@ -232,7 +204,7 @@ const StudentProfileModal: React.FC<Props> = ({
                     placeholder="Email Address"
                     value={editedStudent.email}
                     onChange={(e) => setEditedStudent({ ...editedStudent, email: e.target.value })}
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   />
                 </div>
               </div>
@@ -244,7 +216,7 @@ const StudentProfileModal: React.FC<Props> = ({
                   <select
                     value={editedStudent.course}
                     onChange={(e) => setEditedStudent({ ...editedStudent, course: e.target.value })}
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   >
                     <option value="">Select Course</option>
                     {AVAILABLE_COURSES.map((course) => (
@@ -267,7 +239,7 @@ const StudentProfileModal: React.FC<Props> = ({
                     onChange={(e) => setEditedStudent({ ...editedStudent, age: Number(e.target.value) })}
                     min="16"
                     max="100"
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   />
                 </div>
               </div>
@@ -281,7 +253,7 @@ const StudentProfileModal: React.FC<Props> = ({
                     placeholder="Profile Image URL (Optional)"
                     value={editedStudent.profileImage}
                     onChange={(e) => setEditedStudent({ ...editedStudent, profileImage: e.target.value })}
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   />
                 </div>
               </div>
@@ -292,7 +264,7 @@ const StudentProfileModal: React.FC<Props> = ({
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={onClose}
-                  className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
+                  className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
                 >
                   Cancel
                 </motion.button>
@@ -300,7 +272,7 @@ const StudentProfileModal: React.FC<Props> = ({
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleSaveEdit}
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 dark:bg-green-900 dark:hover:bg-green-800"
                 >
                   Save Changes
                 </motion.button>
@@ -343,7 +315,7 @@ const StudentProfileModal: React.FC<Props> = ({
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => isAdmin?handleEdit():setIsAuthenticating(true)}
+            onClick={() => handleEdit()}
             className="text-gray-500 hover:text-blue-600"
           >
             <Edit className="w-5 h-5" />

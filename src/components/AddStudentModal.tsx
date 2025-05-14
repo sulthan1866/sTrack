@@ -4,21 +4,7 @@ import { Plus, User, Mail, Book, Calendar, Lock } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import {type Student} from '../App';
-
-// Predefined list of available courses
-const AVAILABLE_COURSES = [
-  'Computer Science',
-  'Mathematics',
-  'Physics',
-  'Biology',
-  'Chemistry',
-  'Engineering',
-  'Economics',
-  'Psychology',
-  'Art History',
-  'Literature'
-];
-
+import { AVAILABLE_COURSES } from '../services/studentService';
 
 interface Props {
   setStudents: React.Dispatch<React.SetStateAction<Student[]>>;
@@ -93,7 +79,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={openModal}
-        className="flex items-center px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors"
+        className="flex items-center px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 dark:bg-indigo-900 dark:text-gray-200  transition-colors"
       >
         <Plus className="mr-2 h-5 w-5" />
         Add Student
@@ -129,7 +115,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
                     placeholder="Full Name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500  dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   />
                 </div>
               </div>
@@ -143,7 +129,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
                     placeholder="Email Address"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500  dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   />
                 </div>
               </div>
@@ -155,7 +141,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
                   <select
                     value={form.course}
                     onChange={(e) => setForm({ ...form, course: e.target.value })}
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500  dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   >
                     <option value="">Select Course</option>
                     {AVAILABLE_COURSES.map((course) => (
@@ -178,7 +164,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
                     onChange={(e) => setForm({ ...form, age: e.target.value })}
                     min="16"
                     max="100"
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500  dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   />
                 </div>
               </div>
@@ -192,7 +178,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
                     placeholder="Profile Image URL (Optional)"
                     value={form.profileImage}
                     onChange={(e) => setForm({ ...form, profileImage: e.target.value })}
-                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500  dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 dark:focus:ring-indigo-700"
                   />
                 </div>
               </div>
@@ -203,7 +189,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setOpen(false)}
-                  className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
+                  className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
                 >
                   Cancel
                 </motion.button>
@@ -211,7 +197,7 @@ const AddStudentModal: React.FC<Props> = ({ setStudents }:Props) => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleSubmit}
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 dark:bg-green-900 dark:hover:bg-green-800"
                 >
                   Add Student
                 </motion.button>

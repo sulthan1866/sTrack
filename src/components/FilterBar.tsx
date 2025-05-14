@@ -1,31 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, Check, ChevronDown, X } from 'lucide-react';
-
+import { AVAILABLE_COURSES } from '../services/studentService';
 interface Props {
-  courses?: string[];
   onFilter: (course: string) => void;
   placeholder?: string;
   className?: string;
 }
 
 const FilterBar: React.FC<Props> = ({ 
-  courses = [
-  'Computer Science',
-  'Mathematics',
-  'Physics',
-  'Biology',
-  'Chemistry',
-  'Engineering',
-  'Economics',
-  'Psychology',
-  'Art History',
-  'Literature'
-], 
   onFilter, 
   placeholder = "Filter Course",
   className = ""
 }) => {
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [query, setQuery] = useState('');
@@ -33,8 +21,8 @@ const FilterBar: React.FC<Props> = ({
 
   // Filtered courses based on query
   const filteredCourses = query === '' 
-    ? courses 
-    : courses.filter(course => 
+    ? AVAILABLE_COURSES 
+    : AVAILABLE_COURSES.filter(course => 
         course.toLowerCase().includes(query.toLowerCase())
       );
 
@@ -73,10 +61,7 @@ const FilterBar: React.FC<Props> = ({
       <motion.div 
         className="relative"
         initial={false}
-        animate={{ 
-          borderColor: isOpen ? '#3b82f6' : '#d1d5db',
-          boxShadow: isOpen ? '0 0 0 3px rgba(59, 130, 246, 0.2)' : 'none'
-        }}
+       
       >
         {/* Input */}
         <input
@@ -89,7 +74,7 @@ const FilterBar: React.FC<Props> = ({
           }}
           onClick={() => setIsOpen(true)}
           className="w-full pl-10 pr-16 py-2 border-2 rounded-lg 
-            outline-none bg-white"
+            outline-none bg-white dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600"
         />
 
         {/* Filter Icon */}
@@ -98,12 +83,12 @@ const FilterBar: React.FC<Props> = ({
         </div>
 
         {/* Clear and Dropdown Icons */}
-        <div className="absolute inset-y-0 right-0 flex items-center pr-2 space-x-1">
+        <div className="absolute inset-y-0 right-0 flex items-center pr-2 space-x-1 ">
           {(selectedCourse || query) && (
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={clearSelection}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 "
             >
               <X className="h-5 w-5" />
             </motion.button>
@@ -129,7 +114,7 @@ const FilterBar: React.FC<Props> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-10 mt-1 w-full bg-white border-2 border-gray-200 
+            className="absolute z-10 mt-1 w-full bg-white border-2 border-gray-200 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600 
               rounded-lg shadow-lg max-h-60 overflow-auto"
           >
             {filteredCourses.length === 0 ? (
@@ -140,17 +125,16 @@ const FilterBar: React.FC<Props> = ({
               filteredCourses.map((course) => (
                 <motion.div
                   key={course}
-                  whileHover={{ backgroundColor: '#f3f4f6' }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleFilterChange(course)}
                   className={`
                     px-4 py-2 cursor-pointer flex justify-between items-center
-                    ${selectedCourse === course ? 'bg-blue-50 text-blue-800' : 'hover:bg-gray-100'}
+                    ${selectedCourse === course ? 'bg-blue-50 dark:bg-gray-600 text-blue-800 dark:text-blue-400' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}
                   `}
                 >
                   <span>{course}</span>
                   {selectedCourse === course && (
-                    <Check className="h-5 w-5 text-blue-600" />
+                    <Check className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   )}
                 </motion.div>
               ))

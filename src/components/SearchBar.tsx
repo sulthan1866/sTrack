@@ -32,7 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div 
-      className={`relative flex items-center bg-white border-2 rounded-lg transition-all duration-300 
+      className={`relative flex items-center bg-white border-2 rounded-lg transition-all duration-300 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600
         ${isFocused ? 'border-blue-500 shadow-md' : 'border-gray-300'}
         ${className}`}
     >
@@ -49,7 +49,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       {/* Search Input */}
       <input
         ref={inputRef}
-        className="w-full pl-10 pr-16 py-2 outline-none bg-transparent text-gray-700"
+        className="w-full pl-10 pr-16 py-2 outline-none bg-transparent text-gray-700 dark:text-gray-200"
         placeholder={placeholder}
         value={term}
         onFocus={() => setIsFocused(true)}

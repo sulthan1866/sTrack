@@ -100,7 +100,7 @@ const StudentList: React.FC<Props> = ({
               onClick={() => changeSortKey('name')}
               className={`
                 flex items-center px-3 py-2 rounded 
-                ${sortKey === 'name' ? 'bg-blue-500 text-white' : 'bg-gray-200'}
+              ${sortKey === 'name' ? 'bg-blue-500 text-white dark:bg-blue-900' : 'bg-gray-200 dark:bg-gray-600 dark:text-gray-200'}
               `}
             >
               <SortAsc className="mr-2 h-4 w-4" />
@@ -115,7 +115,7 @@ const StudentList: React.FC<Props> = ({
             onClick={() => changeSortKey('joined')}
             className={`
               flex items-center px-3 py-2 rounded 
-              ${sortKey === 'joined' ? 'bg-blue-500 text-white' : 'bg-gray-200'}
+              ${sortKey === 'joined' ? 'bg-blue-500 text-white dark:bg-blue-900' : 'bg-gray-200 dark:bg-gray-600  dark:text-gray-200'}
             `}
           >
             <Calendar className="mr-2 h-4 w-4" />
@@ -127,7 +127,7 @@ const StudentList: React.FC<Props> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleSortDirection}
-            className="flex items-center px-3 py-2 bg-gray-200 rounded"
+            className="flex items-center px-3 py-2 bg-gray-200 dark:bg-gray-600 dark:text-gray-200 rounded"
           >
             {sortDirection === 'asc' ? (
               <ArrowUp className="h-4 w-4" />
@@ -144,7 +144,7 @@ const StudentList: React.FC<Props> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => exportStudentsCSV(sortedStudents)}
-            className="flex items-center px-3 py-2 bg-green-500 text-white rounded"
+            className="flex items-center px-3 py-2 bg-green-500 text-white dark:bg-green-800 rounded"
           >
             <FileDown className="mr-2 h-4 w-4" />
             Export CSV
@@ -153,17 +153,17 @@ const StudentList: React.FC<Props> = ({
       </div>
 
       {/* Student Stats */}
-      <div className="mb-6 bg-gray-100 p-4 rounded-lg">
+      <div className="mb-6 bg-gray-100 p-4 rounded-lg  dark:bg-gray-700 ">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
-            <Users className="h-6 w-6 text-gray-600" />
-            <span className="font-semibold">Total Students: {students.length}</span>
+            <Users className="h-6 w-6 text-gray-600 dark:text-gray-200" />
+            <span className="font-semibold dark:text-gray-200">Total Students: {students.length}</span>
           </div>
           <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             {Object.entries(courseCounts).map(([course, count]) => (
               <span 
                 key={course} 
-                className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm"
+                className="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 rounded text-sm"
               >
                 {course}: {count}
               </span>
