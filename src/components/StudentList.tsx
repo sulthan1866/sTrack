@@ -8,6 +8,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import StudentCard from './StudentCard';
 import { exportStudentsCSV, getCourseCounts } from '../services/studentService';
 import {type Student} from '../App'
+import { useAuth } from '../context/AuthContext';
+import RequireLoginModal from './LoginModel';
 
 interface Props {
   students: Student[];
@@ -27,7 +29,8 @@ const StudentList: React.FC<Props> = ({
   const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
   const [sortKey, setSortKey] = useState<keyof Student>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-
+  const[isLoginModalOpen, setIsLoginModalOpen] = useState(false); 
+  const {currentUser} = useAuth();
   // Filtering logic
   const filteredStudents = useMemo(() => {
     return students
@@ -74,7 +77,13 @@ const StudentList: React.FC<Props> = ({
       setSortDirection('asc');
     }
   };
-
+const exportCSV = ()=>{
+  if(currentUser){
+    exportStudentsCSV(sortedStudents);
+  }else{
+    setIsLoginModalOpen(true);
+  }
+}
   const onEditStudent = (updatedStudent: Student) => {
     setStudents(prev =>
       prev.map(student =>
@@ -88,6 +97,7 @@ const StudentList: React.FC<Props> = ({
 
   return (
     <div className="container mx-auto px-4">
+      <RequireLoginModal isOpen={isLoginModalOpen} setOpen={setIsLoginModalOpen}/>
       {/* Toolbar */}
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 w-full">
         {/* Sorting and Filtering Controls */}
@@ -143,7 +153,7 @@ const StudentList: React.FC<Props> = ({
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => exportStudentsCSV(sortedStudents)}
+            onClick={exportCSV}
             className="flex items-center px-3 py-2 bg-green-500 text-white dark:bg-green-800 rounded"
           >
             <FileDown className="mr-2 h-4 w-4" />
