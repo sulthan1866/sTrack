@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# S-Track
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive student management web app built with **React**, **TypeScript**, and **Tailwind CSS**.
 
-Currently, two official plugins are available:
+[Live Demo](https://s-track-six.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+* **Authentication**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  * Firebase email/password and Google sign-in.
+  * Users must log in to view/add/edit/delete students.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+* **Student Management**
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+  * View a list of students.
+  * Add new students or edit/delete existing ones.
+  * Data stored in `localStorage`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+* **Filtering & Search**
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+  * Filter students based on course.
+  * Search students by name.
+
+* **Sorting**
+
+  * Sort students by name or joined date (ascending/descending).
+
+* **Download**
+
+  * Download the filtered list of students as a file.
+
+* **Statistics**
+
+  * Total number of students.
+  * Number of students per course.
+
+* **UI & Experience**
+
+  * Dark/light mode based on browser settings.
+  * Responsive design for mobile and desktop.
+  * Mock data generated using `faker-react` and fetched with `axios`/`mock-axios`.
+
+## Tech Stack
+
+* **Frontend**: React + TypeScript
+* **Styling**: Tailwind CSS
+* **Authentication**: Firebase Auth
+* **Mock Data**: Faker React, Axios, Mock-Axios
+* **Data Storage**: localStorage
